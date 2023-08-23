@@ -8,28 +8,16 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphiql',
+  uri: 'https://flyby-router-demo.herokuapp.com/',
   cache: new InMemoryCache(),
 });
-
-client
-  .query({
-    query: gql`
-      query GetItems {
-        items {
-          id
-          title
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result))
-  .catch((errors) => console.log(errors));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </React.StrictMode>
 );
 
