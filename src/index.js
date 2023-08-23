@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -11,20 +11,6 @@ const client = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
   cache: new InMemoryCache(),
 });
-
-client
-  .query({
-    query: gql`
-      query GetItems {
-        items {
-          id
-          title
-        }
-      }
-    `,
-  })
-  .then((result) => console.log(result))
-  .then((error) => console.log(error));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
