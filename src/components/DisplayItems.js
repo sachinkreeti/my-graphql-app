@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { GET_ITEMS } from 'graphql/items/getItems';
+import { GET_ITEMS } from '../graphql/items/getItems';
 
 function DisplayItems() {
   const { loading, error, data } = useQuery(GET_ITEMS);

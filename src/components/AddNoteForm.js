@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_NOTE_MUTATION } from 'graphql/notes/addNote';
+import { ADD_NOTE_MUTATION } from '../graphql/notes/addNote';
 
 function AddNoteForm() {
   const [title, setTitle] = useState('');
