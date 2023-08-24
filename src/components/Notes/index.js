@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import { Button, Card, Col, Row, Spin, Typography } from 'antd';
 import { FETCH_NOTES } from '../../graphql/notes/fetchNotes';
 import { DELETE_NOTE_MUTATION } from '../../graphql/notes/deleteNote';
-import Form from './Form';
+import NoteForm from './NoteForm';
+
+import './index.css';
+
+const { Title, Text } = Typography;
 
 const Notes = () => {
   const { loading, error, data } = useQuery(FETCH_NOTES);
@@ -11,24 +16,24 @@ const Notes = () => {
 
   useEffect(() => {
     if (data) {
-      setNotes(data.fetchNotes)
+      setNotes(data.fetchNotes);
     }
-  }, [data])
+  }, [data]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <Spin size="large" />;
+  if (error) return <Text type="danger">Error: {error.message}</Text>;
 
   const handleNoteAdded = (newNote) => {
     setNotes([newNote, ...notes]);
   };
+
   const handleNoteDelete = async (noteId) => {
     try {
       await deleteNote({
-        variables: { id: noteId }
+        variables: { id: noteId },
       });
 
-      // Remove the deleted note from the state
-      const updatedNotes = notes.filter(note => note.id !== noteId);
+      const updatedNotes = notes.filter((note) => note.id !== noteId);
       setNotes(updatedNotes);
     } catch (error) {
       console.error('Error deleting note:', error);
@@ -36,18 +41,20 @@ const Notes = () => {
   };
 
   return (
-    <div>
-      <Form onNoteAdded={handleNoteAdded} />
+    <div className="notes-container">
+      <Title level={2}>Notes App</Title>
+      <NoteForm onNoteAdded={handleNoteAdded} />
       <hr />
-      <h1>Notes</h1>
-      {notes.map((note) => (
-        <div key={note.id}>
-          <h4>{note.title}</h4>
-          <div>{note.body}</div>
-          <button onClick={() => handleNoteDelete(note.id)}>Delete</button>
-          <hr />
-        </div>
-      ))}
+      <Title level={3}>Notes List</Title>
+      <Row gutter={[16, 16]}>
+        {notes.map((note) => (
+          <Col span={12} key={note.id}>
+            <Card title={note.title} extra={<Button onClick={() => handleNoteDelete(note.id)}>Delete</Button>}>
+              <p>{note.body}</p>
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };
