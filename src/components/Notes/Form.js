@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { ADD_NOTE_MUTATION } from '../graphql/notes/addNote';
+import { ADD_NOTE_MUTATION } from '../../graphql/notes/addNote';
 
-function AddNoteForm() {
+function Form() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
@@ -48,4 +48,4 @@ function AddNoteForm() {
   );
 }
 
-export default AddNoteForm;
+export default Form;
