@@ -3,30 +3,34 @@ import { useMutation } from '@apollo/client';
 import { ADD_NOTE_MUTATION } from '../../graphql/notes/addNote';
 
 function Form({ onNoteAdded }) {
+  const [addNote] = useMutation(ADD_NOTE_MUTATION);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
-  const [addNote, { data }] = useMutation(ADD_NOTE_MUTATION);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await addNote({
-      variables: {
-        input: {
-          params: {
-            title: title,
-            body: body
+
+    try {
+      const result = await addNote({
+        variables: {
+          input: {
+            params: {
+              title: title,
+              body: body
+            }
           }
         }
-      }
-    });
+      });
 
-    const addedNote = result.data.addNote.note;
-    onNoteAdded(addedNote);
+      const addedNote = result.data.addNote.note;
+      onNoteAdded(addedNote);
 
-    // reset form fields
-    setTitle('');
-    setBody('');
+      // reset form fields
+      setTitle('');
+      setBody('');
+    } catch (error) {
+      console.error('Note creation failed:', error);
+    }
   };
 
   return (
@@ -43,14 +47,6 @@ function Form({ onNoteAdded }) {
         </div>
         <button type="submit">Add Note</button>
       </form>
-      {data && data.addNote && (
-        <div>
-          <h3>New Note</h3>
-          <p>ID: {data.addNote.note.id}</p>
-          <p>Title: {data.addNote.note.title}</p>
-          <p>Body: {data.addNote.note.body}</p>
-        </div>
-      )}
     </div>
   );
 }

@@ -17,7 +17,7 @@ const Notes = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   const handleNoteAdded = (newNote) => {
-    setNotes([...notes, newNote]);
+    setNotes([newNote, ...notes]);
   };
 
   return (
