@@ -1,18 +1,28 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { FETCH_NOTES } from '../../graphql/notes/fetchNotes';
 import Form from './Form';
 
 const Notes = () => {
   const { loading, error, data } = useQuery(FETCH_NOTES);
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setNotes(data.fetchNotes)
+    }
+  }, [data])
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const notes = data.fetchNotes;
+  const handleNoteAdded = (newNote) => {
+    setNotes([...notes, newNote]);
+  };
 
   return (
     <div>
-      <Form />
+      <Form onNoteAdded={handleNoteAdded}/>
       <hr />
       <h1>Notes</h1>
       {notes.map((note) => (

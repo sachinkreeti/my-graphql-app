@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_NOTE_MUTATION } from '../../graphql/notes/addNote';
 
-function Form() {
+function Form({ onNoteAdded }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
   const [addNote, { data }] = useMutation(ADD_NOTE_MUTATION);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addNote({
+    const result = await addNote({
       variables: {
         input: {
           params: {
@@ -20,6 +20,13 @@ function Form() {
         }
       }
     });
+
+    const addedNote = result.data.addNote.note;
+    onNoteAdded(addedNote);
+
+    // reset form fields
+    setTitle('');
+    setBody('');
   };
 
   return (
