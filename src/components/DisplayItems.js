@@ -1,21 +1,5 @@
-import { useQuery, gql } from '@apollo/client';
-
-const GET_ITEMS = gql`
-  query GetItems {
-    items {
-      id
-      title
-      description
-      artist {
-        firstName
-        lastName
-        email
-        createdAt
-      }
-    }
-  }
-`;
-
+import { useQuery } from '@apollo/client';
+import { GET_ITEMS } from 'graphql/queries/items';
 
 function DisplayItems() {
   const { loading, error, data } = useQuery(GET_ITEMS);

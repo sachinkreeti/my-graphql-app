@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { gql } from '@apollo/client';
-
-const ADD_NOTE_MUTATION = gql`
-  mutation AddNote($input: AddNoteInput!) {
-    addNote(input: $input) {
-      note {
-        id
-        title
-        body
-      }
-    }
-  }
-`;
+import { ADD_NOTE_MUTATION } from 'graphql/queries/addNote';
 
 function AddNoteForm() {
   const [title, setTitle] = useState('');
